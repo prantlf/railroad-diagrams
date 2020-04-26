@@ -1,7 +1,13 @@
 Railroad-diagram Generator
 ==========================
 
-<a href="https://github.com/tabatkins/railroad-diagrams/blob/gh-pages/images/rr-title.svg"><img src="https://github.com/tabatkins/railroad-diagrams/raw/gh-pages/images/rr-title.svg?sanitize=true" alt="Diagram(Stack('Generate', 'some'), OneOrMore(NonTerminal('railroad diagrams'), Comment('and more')))" title="Diagram(Stack('Generate', 'some'), OneOrMore(NonTerminal('railroad diagrams'), Comment('and more')))" width=10000></a>
+[![NPM version](https://badge.fury.io/js/%40prantlf%2Frailroad-diagrams/.svg)](http://badge.fury.io/js/%40prantlf%2Frailroad-diagrams/)
+[![Build Status](https://travis-ci.org/prantlf/railroad-diagrams/.png)](https://travis-ci.org/prantlf/railroad-diagrams/)
+[![Dependency Status](https://david-dm.org/prantlf/railroad-diagrams/.svg)](https://david-dm.org/prantlf/railroad-diagrams/)
+[![devDependency Status](https://david-dm.org/prantlf/railroad-diagrams//dev-status.svg)](https://david-dm.org/prantlf/railroad-diagrams/#info=devDependencies)
+
+
+<a href="https://github.com/prantlf/railroad-diagrams/blob/gh-pages/images/rr-title.svg"><img src="https://github.com/prantlf/railroad-diagrams/raw/gh-pages/images/rr-title.svg?sanitize=true" alt="Diagram(Stack('Generate', 'some'), OneOrMore(NonTerminal('railroad diagrams'), Comment('and more')))" title="Diagram(Stack('Generate', 'some'), OneOrMore(NonTerminal('railroad diagrams'), Comment('and more')))" width=400></a>
 
 This is a small library for generating railroad diagrams
 (like what [JSON.org](http://json.org) uses)
@@ -12,17 +18,21 @@ in a form that is more readable than using regular expressions or BNF.
 They can easily represent any context-free grammar, and some more powerful grammars.
 There are several railroad-diagram generators out there, but none of them had the visual appeal I wanted, so I wrote my own.
 
-There's an online dingus for [JavaScript](https://tabatkins.github.io/railroad-diagrams/generator.html), [JSON]((https://tabatkins.github.io/railroad-diagrams/generator-json.html)) or [YAML](https://tabatkins.github.io/railroad-diagrams/generator-yaml.html) input for you to play with and get SVG code from!
+There's an online dingus for [JavaScript](https://prantlf.github.io/railroad-diagrams/generator.html), [JSON]((https://prantlf.github.io/railroad-diagrams/generator-json.html)) or [YAML](https://prantlf.github.io/railroad-diagrams/generator-yaml.html) input for you to play with and get SVG code from!
 
-(For Python, see [the Python README](https://github.com/tabatkins/railroad-diagrams/blob/gh-pages/README-py.md), or just `pip install railroad-diagrams`.)
+This is a fork of the [original project](https://github.com/tabatkins/railroad-diagrams) with the following ipmrovements:
+
+* Introduces the method `Diagram.fromJSON` to create diagrams from machine readable formats convertible to JSON.
+* Adds a command-line tool `rrd2svg` for converting JSON or YAML diagram input to SVG output.
+* Adds a command-line tool `rrdlint` for validating JSON or YAML diagram input.
+* Supports `VerticalSequence`, which is makes sequences with many items more readable than `Stack`. (Authored by Glynn Williams.)
+* No Python and separate JavaScript implementation for Node.js. Single JavaScript "source of truth".
 
 Diagrams
 --------
 
-To use the library,
-include `railroad.css` in your page,
-and import the `railroad.js` module in your script,
-then call the Diagram() function.
+To use the library, include `railroad-diagrams.css` in your page, and import
+the `lib/index.mjs` module in your script, then call the Diagram() function.
 Its arguments are the components of the diagram
 (Diagram is a special form of Sequence).
 
@@ -32,15 +42,15 @@ so you can construct diagrams without having to spam `new` all over the place:
 
 ```js
 // Use the constructors
-import {Diagram, Choice} from "./railroad.js";
+import {Diagram, Choice} from "@prantlf/railroad-diagrams/lib/index.mjs";
 const d = new Diagram("foo", new Choice(0, "bar", "baz"));
 
 // Or use the functions that call the constructors for you
-import rr from "./railroad.js";
+import rr from "@prantlf/railroad-diagrams/lib/index.mjs";
 const d = rr.Diagram("foo", rr.Choice(0, "bar", "baz"));
 
 // Or use the JSON serialization of the diagram
-import {Diagram} from "./railroad.js";
+import {Diagram} from "@prantlf/railroad-diagrams/lib/index.mjs";
 const d = Diagram.fromJSON([
   { type: 'Terminal', text: 'foo' }.
   { type: 'Choice', normalIndex: 0, options: [
@@ -70,8 +80,8 @@ You can include a specific version of this library on a plain web page using the
 
 ```html
 <link rel="stylesheet"
-      href="https://unpkg.com/railroad-diagrams@1.2.0/railroad-diagrams.css">
-<script src="https://unpkg.com/railroad-diagrams@1.2.0/lib/index.umd.min.js"></script>
+      href="https://unpkg.com/@prantlf/railroad-diagrams@1.0.0/railroad-diagrams.css">
+<script src="https://unpkg.com/@prantlf/railroad-diagrams@1.0.0/lib/index.umd.min.js"></script>
 ```
 
 Node.js
@@ -80,28 +90,28 @@ Node.js
 You can install the library using the Node.js 6 or newer. For example, with `npm` or `yarn`:
 
 ```
-npm i railroad-diagrams
-yarn add railroad-diagrams
+npm i @prantlf/railroad-diagrams
+yarn add @prantlf/railroad-diagrams
 ```
 
 Exports of the library can be consumed in ESM modules similarly as it is documented for the web pages above:
 
 ```js
 // Use the constructors os the static Diagram.fromJSON
-import {Diagram, Choice} from "railroad-diagrams";
+import {Diagram, Choice} from "@prantlf/railroad-diagrams";
 
 // Or use the functions that call the constructors for you
-import rr from "railroad-diagrams";
+import rr from "@prantlf/railroad-diagrams";
 ```
 
 Exports of the library can be consumed in CJS modules too:
 
 ```js
 // Use the constructors os the static Diagram.fromJSON
-const {Diagram, Choice} = require("railroad-diagrams");
+const {Diagram, Choice} = require("@prantlf/railroad-diagrams");
 
 // Or use the functions that call the constructors for you
-const rr = require("railroad-diagrams").default;
+const rr = require("@prantlf/railroad-diagrams").default;
 ```
 
 Make sure, that you do not call methods `addTo` and `toSVG`, which work inly in the web browser. You can generate an SVG by `toString` or `toStandalone`.
@@ -121,52 +131,51 @@ The leaves:
 The containers:
 * Sequence(...children) - like simple concatenation in a regex.
 
-    ![Sequence('1', '2', '3')](https://github.com/tabatkins/railroad-diagrams/raw/gh-pages/images/rr-sequence.svg?sanitize=true "Sequence('1', '2', '3')")
+    ![Sequence('1', '2', '3')](https://github.com/prantlf/railroad-diagrams/raw/gh-pages/images/rr-sequence.svg?sanitize=true "Sequence('1', '2', '3')")
 
 * Stack(...children) - identical to a Sequence, but the items are stacked vertically rather than horizontally. Best used when a simple Sequence would be too wide; instead, you can break the items up into a Stack of Sequences of an appropriate width.
 
-    ![Stack('1', '2', '3')](https://github.com/tabatkins/railroad-diagrams/raw/gh-pages/images/rr-stack.svg?sanitize=true "Stack('1', '2', '3')")
+    ![Stack('1', '2', '3')](https://github.com/prantlf/railroad-diagrams/raw/gh-pages/images/rr-stack.svg?sanitize=true "Stack('1', '2', '3')")
 
 * VerticalSequence(...children) - identical to a Stack, but the items are connected by short vertical lines rather than long rounded curves on the sides of the sequence. Best used when a Stack would be so high that the rounded curves would make it difficult to read.
 
-    ![VerticalSequence('1', '2', '3')](https://github.com/tabatkins/railroad-diagrams/raw/gh-pages/images/rr-verticalsequence.svg?sanitize=true "VerticalSequence('1', '2', '3')")
+    ![VerticalSequence('1', '2', '3')](https://github.com/prantlf/railroad-diagrams/raw/gh-pages/images/rr-verticalsequence.svg?sanitize=true "VerticalSequence('1', '2', '3')")
 
 * OptionalSequence(...children) - a Sequence where every item is *individually* optional, but at least one item must be chosen
 
-    ![OptionalSequence('1', '2', '3')](https://github.com/tabatkins/railroad-diagrams/raw/gh-pages/images/rr-optionalsequence.svg?sanitize=true "OptionalSequence('1', '2', '3')")
+    ![OptionalSequence('1', '2', '3')](https://github.com/prantlf/railroad-diagrams/raw/gh-pages/images/rr-optionalsequence.svg?sanitize=true "OptionalSequence('1', '2', '3')")
 
 * Choice(index, ...children) - like `|` in a regex.  The index argument specifies which child is the "normal" choice and should go in the middle
 
-    ![Choice(1, '1', '2', '3')](https://github.com/tabatkins/railroad-diagrams/raw/gh-pages/images/rr-choice.svg?sanitize=true "Choice(1, '1', '2', '3')")
+    ![Choice(1, '1', '2', '3')](https://github.com/prantlf/railroad-diagrams/raw/gh-pages/images/rr-choice.svg?sanitize=true "Choice(1, '1', '2', '3')")
 
 * MultipleChoice(index, type, ...children) - like `||` or `&&` in a CSS grammar; it's similar to a Choice, but more than one branch can be taken.  The index argument specifies which child is the "normal" choice and should go in the middle, while the type argument must be either "any" (1+ branches can be taken) or "all" (all branches must be taken).
 
-    ![MultipleChoice(1, 'all', '1', '2', '3')](https://github.com/tabatkins/railroad-diagrams/raw/gh-pages/images/rr-multiplechoice.svg?sanitize=true "MultipleChoice(1, 'all', '1', '2', '3')")
+    ![MultipleChoice(1, 'all', '1', '2', '3')](https://github.com/prantlf/railroad-diagrams/raw/gh-pages/images/rr-multiplechoice.svg?sanitize=true "MultipleChoice(1, 'all', '1', '2', '3')")
 
 * HorizontalChoice(...children) - Identical to Choice, but the items are stacked horizontally rather than vertically. There's no "straight-line" choice, so it just takes a list of children. Best used when a simple Choice would be too tall; instead, you can break up the items into a HorizontalChoice of Choices of an appropriate height.
 
-	![HorizontalChoice(Choice(2,'0','1','2','3','4'), Choice(2, '5', '6', '7', '8', '9'))](https://github.com/tabatkins/railroad-diagrams/raw/gh-pages/images/rr-horizontalchoice.svg?sanitize=true "HorizontalChoice(Choice(2,'0','1','2','3','4'), Choice(2, '5', '6', '7', '8', '9'))")
+	![HorizontalChoice(Choice(2,'0','1','2','3','4'), Choice(2, '5', '6', '7', '8', '9'))](https://github.com/prantlf/railroad-diagrams/raw/gh-pages/images/rr-horizontalchoice.svg?sanitize=true "HorizontalChoice(Choice(2,'0','1','2','3','4'), Choice(2, '5', '6', '7', '8', '9'))")
 
 * Optional(child, skip) - like `?` in a regex.  A shorthand for `Choice(1, Skip(), child)`.  If the optional `skip` parameter has the value `"skip"`, it instead puts the Skip() in the straight-line path, for when the "normal" behavior is to omit the item.
 
-
-    ![Optional('foo'), Optional('bar', 'skip')](https://github.com/tabatkins/railroad-diagrams/raw/gh-pages/images/rr-optional.svg?sanitize=true "Optional('foo'), Optional('bar', 'skip')")
+    ![Optional('foo'), Optional('bar', 'skip')](https://github.com/prantlf/railroad-diagrams/raw/gh-pages/images/rr-optional.svg?sanitize=true "Optional('foo'), Optional('bar', 'skip')")
 
 * OneOrMore(child, repeat) - like `+` in a regex.  The 'repeat' argument is optional, and specifies something that must go between the repetitions (usually a `Comment()`, but sometimes things like `","`, etc.)
 
-    ![OneOrMore('foo', Comment('bar'))](https://github.com/tabatkins/railroad-diagrams/raw/gh-pages/images/rr-oneormore.svg?sanitize=true "OneOrMore('foo', Comment('bar'))")
+    ![OneOrMore('foo', Comment('bar'))](https://github.com/prantlf/railroad-diagrams/raw/gh-pages/images/rr-oneormore.svg?sanitize=true "OneOrMore('foo', Comment('bar'))")
 
 * AlternatingSequence(option1, option2) - similar to a OneOrMore, where you must alternate between the two choices, but allows you to start and end with either element. (OneOrMore requires you to start and end with the "child" node.)
 
-    ![AlternatingSequence('foo', 'bar')](https://github.com/tabatkins/railroad-diagrams/raw/gh-pages/images/rr-alternatingsequence.svg?sanitize=true "AlternatingSequence('foo', 'bar')")
+    ![AlternatingSequence('foo', 'bar')](https://github.com/prantlf/railroad-diagrams/raw/gh-pages/images/rr-alternatingsequence.svg?sanitize=true "AlternatingSequence('foo', 'bar')")
 
 * ZeroOrMore(child, repeat, skip) - like `*` in a regex.  A shorthand for `Optional(OneOrMore(child, repeat), skip)`.  Both `repeat` (same as in `OneOrMore()`) and `skip` (same as in `Optional()`) are optional.
 
-    ![ZeroOrMore('foo', Comment('bar')), ZeroOrMore('foo', Comment('bar'), 'skip')](https://github.com/tabatkins/railroad-diagrams/raw/gh-pages/images/rr-zeroormore.svg?sanitize=true "ZeroOrMore('foo', Comment('bar')), ZeroOrMore('foo', Comment('bar'), 'skip')")
+    ![ZeroOrMore('foo', Comment('bar')), ZeroOrMore('foo', Comment('bar'), 'skip')](https://github.com/prantlf/railroad-diagrams/raw/gh-pages/images/rr-zeroormore.svg?sanitize=true "ZeroOrMore('foo', Comment('bar')), ZeroOrMore('foo', Comment('bar'), 'skip')")
 
 * Group(child, label?) - highlights its child with a dashed outline, and optionally labels it. Passing a string as the label constructs a Comment, or you can build one yourself (to give an href or title).
 
-    ![Sequence("foo", Group(Choice(0, NonTerminal('option 1'), NonTerminal('or two')), "label"), "bar",)](https://github.com/tabatkins/railroad-diagrams/raw/gh-pages/images/rr-group.svg?sanitize=true "Sequence('foo', Group(Choice(0, NonTerminal('option 1'), NonTerminal('or two')), 'label'), 'bar',)")
+    ![Sequence("foo", Group(Choice(0, NonTerminal('option 1'), NonTerminal('or two')), "label"), "bar",)](https://github.com/prantlf/railroad-diagrams/raw/gh-pages/images/rr-group.svg?sanitize=true "Sequence('foo', Group(Choice(0, NonTerminal('option 1'), NonTerminal('or two')), 'label'), 'bar',)")
 
 After constructing a Diagram, call `.format(...padding)` on it, specifying 0-4 padding values (just like CSS) for some additional "breathing space" around the diagram (the paddings default to 20px).
 
@@ -243,12 +252,8 @@ Caveats
 
 SVG can't actually respond to the sizes of content; in particular, there's no way to make SVG adjust sizing/positioning based on the length of some text.  Instead, I guess at some font metrics, which mostly work as long as you're using a fairly standard monospace font.  This works pretty well, but long text inside of a construct might eventually overflow the construct.
 
-
 License
 -------
 
 This document and all associated files in the github project are licensed under [CC0](http://creativecommons.org/publicdomain/zero/1.0/) ![](http://i.creativecommons.org/p/zero/1.0/80x15.png).
-This means you can reuse, remix, or otherwise appropriate this project for your own use **without restriction**.
-(The actual legal meaning can be found at the above link.)
-Don't ask me for permission to use any part of this project, **just use it**.
-I would appreciate attribution, but that is not required by the license.
+This means you can reuse, remix, or otherwise appropriate this project for your own use **without restriction**. (The actual legal meaning can be found at the above link.)

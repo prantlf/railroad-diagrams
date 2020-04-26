@@ -1,17 +1,20 @@
 {
-  "name": "railroad-diagrams",
-  "version": "1.1.0",
-  "description": "A small JS+SVG library for drawing railroad syntax diagrams.",
+  "name": "@prantlf/railroad-diagrams",
+  "version": "1.0.0",
+  "description": "JavaScript library and command-line tools for drawing railroad syntax diagrams to SVG.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tabatkins/railroad-diagrams.git"
+    "url": "https://github.com/prantlf/railroad-diagrams.git"
   },
-  "author": "Tab Atkins Jr.",
+  "author": "Ferdinand Prantl <prantlf@gmail.com> (http://prantl.tk)",
+  "contributors": [
+    "Tab Atkins Jr. <jackalmage@gmail.com> (http://xanthir.com)"
+  ],
   "license": "CC0-1.0",
   "bugs": {
-    "url": "https://github.com/tabatkins/railroad-diagrams/issues"
+    "url": "https://github.com/prantlf/railroad-diagrams/issues"
   },
-  "homepage": "https://github.com/tabatkins/railroad-diagrams",
+  "homepage": "https://github.com/prantlf/railroad-diagrams",
   "engines": {
     "node": ">=6"
   },
@@ -26,7 +29,7 @@
   },
   "main": "lib/index.js",
   "browser": "lib/index.umd.js",
-  "module": "railroad.js",
+  "module": "lib/index.mjs",
   "keywords": [
     "railroad",
     "syntax",
@@ -40,6 +43,9 @@
     "start": "rollup -c rollup.config.js -w",
     "pretest": "eslint rollup.config.js railroad.js rrd2svg.js rrdlint.js benchmark/*.js",
     "test": "node bin/rrdlint -v examples/* && node bin/rrd2svg examples/ident.yml"
+  },
+  "release": {
+    "branches": ["gh-pages"]
   },
   "dependencies": {
     "js-yaml": "3.13.1",

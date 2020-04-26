@@ -1,17 +1,4 @@
 "use strict";
-/*
-Railroad Diagrams
-by Tab Atkins Jr. (and others)
-http://xanthir.com
-http://twitter.com/tabatkins
-http://github.com/tabatkins/railroad-diagrams
-
-This document and all associated files in the github project are licensed under CC0: http://creativecommons.org/publicdomain/zero/1.0/
-This means you can reuse, remix, or otherwise appropriate this project for your own use WITHOUT RESTRICTION.
-(The actual legal meaning can be found at the above link.)
-Don't ask me for permission to use any part of this project, JUST USE IT.
-I would appreciate attribution, but that is not required by the license.
-*/
 
 // Export function versions of all the constructors.
 // Each class will add itself to this object.
