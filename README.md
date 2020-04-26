@@ -32,8 +32,8 @@ Diagrams
 --------
 
 To use the library, include `railroad-diagrams.css` in your page, and import
-the `lib/index.mjs` module in your script, then call the Diagram() function.
-Its arguments are the components of the diagram
+the `./railroad-diagrams/lib/index.mjs` module in your script, then call
+the Diagram() function. Its arguments are the components of the diagram
 (Diagram is a special form of Sequence).
 
 The constructors for each node are named exports in the module;
@@ -42,20 +42,21 @@ so you can construct diagrams without having to spam `new` all over the place:
 
 ```js
 // Use the constructors
-import {Diagram, Choice} from "@prantlf/railroad-diagrams/lib/index.mjs";
+import {Diagram, Choice} from "./railroad-diagrams/lib/index.mjs";
 const d = new Diagram("foo", new Choice(0, "bar", "baz"));
 
 // Or use the functions that call the constructors for you
-import rr from "@prantlf/railroad-diagrams/lib/index.mjs";
+import rr from "./railroad-diagrams/lib/index.mjs";
 const d = rr.Diagram("foo", rr.Choice(0, "bar", "baz"));
 
 // Or use the JSON serialization of the diagram
-import {Diagram} from "@prantlf/railroad-diagrams/lib/index.mjs";
+import {Diagram} from "./railroad-diagrams/lib/index.mjs";
 const d = Diagram.fromJSON([
   { type: 'Terminal', text: 'foo' }.
   { type: 'Choice', normalIndex: 0, options: [
       { type: 'Terminal', text: 'bar' }, { type: 'Terminal', text: 'baz' }
-  ] } ]);
+    ] }
+]);
 ```
 
 Alternately, you can call ComplexDiagram();
@@ -115,6 +116,56 @@ const rr = require("@prantlf/railroad-diagrams").default;
 ```
 
 Make sure, that you do not call methods `addTo` and `toSVG`, which work inly in the web browser. You can generate an SVG by `toString` or `toStandalone`.
+
+Command-line Tools
+------------------
+
+If you install the library using the Node.js 6 or newer globally:
+
+```
+npm i -g railroad-diagrams
+```
+
+You will be able to execute the following command line tools:
+
+* `rrdlint` - checks the syntax of railroad diagrams in JSON, YAML or JavaScript.
+* `rrd2svg` - generates railroad diagrams from JSON, YAML or JavaScript to SVG.
+
+```
+$ rrdlint -h
+Usage: rrdlint [option...] [pattern...]
+
+Options:
+  -i|--input <type>  read input from json, yaml or javascript. defaults to json
+  -v|--verbose       print checked file names and error stacktrace
+  -V|--version       print version number
+  -h|--help          print usage instructions
+
+Examples:
+  cat foo.yaml | rrdlint -i yaml
+  rrdlint diagrams/*
+```
+
+```
+$ rrd2svg -h
+Usage: rrd2svg [option...] [file]
+
+Options:
+  --[no]-standalone  add stylesheet to the SVG element. defaults to true
+  --[no]-debug       add sizing data into the SVG element. defaults to false
+  -i|--input <type>  read input from json, yaml or javascript. defaults to json
+  -v|--verbose       print error stacktrace
+  -V|--version       print version number
+  -h|--help          print usage instructions
+
+Examples:
+  cat foo.yaml | rrd2svg -i yaml
+  rrd2svg foo.json
+```
+
+If no file name or file name pattern is provided, standard input will be read.
+If no input type is provided, it will be inferred from the file extension:
+".json" -> json, ".yaml" or ".yml" -> yaml, ".js" -> javascript.
 
 Components
 ----------
