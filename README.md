@@ -1,17 +1,15 @@
 Railroad-diagram Generator
 ==========================
 
-[![NPM version](https://badge.fury.io/js/%40prantlf%2Frailroad-diagrams/.svg)](http://badge.fury.io/js/%40prantlf%2Frailroad-diagrams/)
-[![Build Status](https://travis-ci.org/prantlf/railroad-diagrams/.png)](https://travis-ci.org/prantlf/railroad-diagrams/)
-[![Dependency Status](https://david-dm.org/prantlf/railroad-diagrams/.svg)](https://david-dm.org/prantlf/railroad-diagrams/)
-[![devDependency Status](https://david-dm.org/prantlf/railroad-diagrams//dev-status.svg)](https://david-dm.org/prantlf/railroad-diagrams/#info=devDependencies)
-
+[![NPM version](https://badge.fury.io/js/%40prantlf%2Frailroad-diagrams.svg)](http://badge.fury.io/js/%40prantlf%2Frailroad-diagrams/)
+[![Build Status](https://travis-ci.org/prantlf/railroad-diagrams.png)](https://travis-ci.org/prantlf/railroad-diagrams/)
+[![Dependency Status](https://david-dm.org/prantlf/railroad-diagrams.svg)](https://david-dm.org/prantlf/railroad-diagrams/)
+[![devDependency Status](https://david-dm.org/prantlf/railroad-diagrams/dev-status.svg)](https://david-dm.org/prantlf/railroad-diagrams/#info=devDependencies)
 
 <a href="https://github.com/prantlf/railroad-diagrams/blob/gh-pages/images/rr-title.svg"><img src="https://github.com/prantlf/railroad-diagrams/raw/gh-pages/images/rr-title.svg?sanitize=true" alt="Diagram(Stack('Generate', 'some'), OneOrMore(NonTerminal('railroad diagrams'), Comment('and more')))" title="Diagram(Stack('Generate', 'some'), OneOrMore(NonTerminal('railroad diagrams'), Comment('and more')))" width=400></a>
 
-This is a small library for generating railroad diagrams
-(like what [JSON.org](http://json.org) uses)
-using SVG, with both JS and Python ports.
+This is a small JavaScript library for generating railroad diagrams
+(like what [JSON.org](http://json.org) uses) using SVG.
 
 Railroad diagrams are a way of visually representing a grammar
 in a form that is more readable than using regular expressions or BNF.
