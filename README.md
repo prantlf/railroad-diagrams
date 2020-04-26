@@ -127,6 +127,10 @@ The containers:
 
     ![Stack('1', '2', '3')](https://github.com/tabatkins/railroad-diagrams/raw/gh-pages/images/rr-stack.svg?sanitize=true "Stack('1', '2', '3')")
 
+* VerticalSequence(...children) - identical to a Stack, but the items are connected by short vertical lines rather than long rounded curves on the sides of the sequence. Best used when a Stack would be so high that the rounded curves would make it difficult to read.
+
+    ![VerticalSequence('1', '2', '3')](https://github.com/tabatkins/railroad-diagrams/raw/gh-pages/images/rr-verticalsequence.svg?sanitize=true "VerticalSequence('1', '2', '3')")
+
 * OptionalSequence(...children) - a Sequence where every item is *individually* optional, but at least one item must be chosen
 
     ![OptionalSequence('1', '2', '3')](https://github.com/tabatkins/railroad-diagrams/raw/gh-pages/images/rr-optionalsequence.svg?sanitize=true "OptionalSequence('1', '2', '3')")

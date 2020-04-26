@@ -453,6 +453,78 @@ export class Stack extends DiagramMultiContainer {
 funcs.Stack = (...args)=>new Stack(...args);
 
 
+export class VerticalSequence extends DiagramMultiContainer {
+	constructor(...items) {
+		super('g', items);
+		if( items.length === 0 ) {
+			throw new RangeError("VerticalSequence() must have at least one child.");
+		}
+		this.items = items.map(wrapString);
+		this.width = Math.max.apply(null, this.items.map(function(e) { return e.width + (e.needsSpace?20:0); }));
+		//if(this.items[0].needsSpace) this.width -= 10;
+		//if(this.items[this.items.length-1].needsSpace) this.width -= 10;
+		if(this.items.length > 1){
+			this.width += Options.AR*2;
+		}
+		this.needsSpace = true;
+		this.up = this.items[0].up;
+		this.down = this.items[this.items.length-1].down;
+
+		this.height = 0;
+		var last = this.items.length - 1;
+		for(var i = 0; i < this.items.length; i++) {
+			if(i !== last) {
+				this.height += this.items[i].height + this.items[i].down + this.items[i+1].up + Options.VS*2;
+			}
+		}
+		if(Options.DEBUG) {
+			this.attrs['data-updown'] = this.up + " " + this.height + " " + this.down
+			this.attrs['data-type'] = "verticalsequence"
+		}
+	}
+	format(x,y,width) {
+		var gaps = determineGaps(width, this.width);
+		new Path(x,y).h(gaps[0]).addTo(this);
+		x += gaps[0];
+		var xInitial = x;
+		var minWidth = 1000;
+		for(let itemNum in this.items){
+			let item = this.items[itemNum];
+			minWidth = item.width < minWidth ? item.width : minWidth;
+		}
+
+		for(var i = 0; i < this.items.length; i++) {
+			var item = this.items[i];
+			item.format(x, y, item.width).addTo(this);
+			y += item.height;
+
+			if(i !== this.items.length-1) {
+				x += minWidth / 2;
+				y += item.down
+				new Path(x, y)
+					.v(Options.VS*2).addTo(this)
+				y += this.items[i+1].up + Options.VS*2;
+				x = xInitial;
+			}
+			else{
+				x += item.width;
+				y += item.height;
+			}
+
+		}
+
+		if(this.items.length > 1) {
+			new Path(x,y).h(this.width - this.items[this.items.length - 1].width).addTo(this);
+			x += Options.AR;
+		}
+		new Path(x,y).h(gaps[1]).addTo(this);
+
+		return this;
+	}
+}
+funcs.VerticalSequence = (...args)=>new VerticalSequence(...args);
+
+
 export class OptionalSequence extends DiagramMultiContainer {
 	constructor(...items) {
 		super('g', items);
@@ -1443,9 +1515,9 @@ function diagramFromJSON(Diagram, input) {
 }
 
 const classes = {
-	Diagram, ComplexDiagram, Sequence, Stack, OptionalSequence, HorizontalChoice,
-	AlternatingSequence, Choice, MultipleChoice, Optional, OneOrMore, ZeroOrMore,
-	Group, Start, End, Terminal, NonTerminal, Comment, Skip
+	Diagram, ComplexDiagram, Sequence, Stack, VerticalSequence, OptionalSequence,
+	HorizontalChoice, AlternatingSequence, Choice, MultipleChoice, Optional,
+	OneOrMore, ZeroOrMore, Group, Start, End, Terminal, NonTerminal, Comment, Skip
 }
 
 function nodeFromJSON(node) {
@@ -1456,6 +1528,7 @@ function nodeFromJSON(node) {
 		case ComplexDiagram:
 		case Sequence:
 		case Stack:
+		case VerticalSequence:
 		case OptionalSequence:
 		case HorizontalChoice:
 			return new Node(...itemsFromJSON(node.items));
