@@ -1,12 +1,7 @@
 secrets.json
 .DS_Store
-*.egg-info
 .idea
-*.iml
-*.pyc
 node_modules
 /bin
 /lib
-/dist
-/build
 test.html
