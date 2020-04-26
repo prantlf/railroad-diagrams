@@ -1,6 +1,6 @@
 {
   "name": "@prantlf/railroad-diagrams",
-  "version": "1.0.0",
+  "version": "0.0.0-development",
   "description": "JavaScript library and command-line tools for drawing railroad syntax diagrams to SVG.",
   "repository": {
     "type": "git",
@@ -45,7 +45,9 @@
     "test": "node bin/rrdlint -v examples/* && node bin/rrd2svg examples/ident.yml"
   },
   "release": {
-    "branches": ["gh-pages"]
+    "branches": [
+      "gh-pages"
+    ]
   },
   "dependencies": {
     "js-yaml": "3.13.1",
