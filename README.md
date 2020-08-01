@@ -247,6 +247,7 @@ you'll have to go adjust the options specifying the text metrics as well.
 * `Options.INTERNAL_ALIGNMENT` - when some branches of a container are narrower than others, this determines how they're aligned in the extra space.  Defaults to `"center"`, but can be set to `"left"` or `"right"`.
 * `Options.CHAR_WIDTH` - the approximate width, in CSS px, of characters in normal text (`Terminal` and `NonTerminal`). Defaults to `8.5`.
 * `Options.COMMENT_CHAR_WIDTH` - the approximate width, in CSS px, of character in `Comment` text, which by default is smaller than the other textual items. Defaults to `7`.
+* `Options.COMPUTE_TEXT_WIDTH` - a `(string, Component) -> number` function to compute the total text width. The component can be `Terminal`, `NonTerminal`, `Comment` or `Start`.
 * `Options.DEBUG` - if `true`, writes some additional "debug information" into the attributes of elements in the output, to help debug sizing issues. Defaults to `false`.
 
 JSON
