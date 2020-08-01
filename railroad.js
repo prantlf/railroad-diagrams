@@ -14,6 +14,7 @@ export const Options = {
 	INTERNAL_ALIGNMENT: 'center', // how to align items when they have extra space. left/right/center
 	CHAR_WIDTH: 8.5, // width of each monospace character. play until you find the right value for your font
 	COMMENT_CHAR_WIDTH: 7, // comments are in smaller text by default
+	COMPUTE_TEXT_WIDTH: defaultComputeTextWidth, // custom function to compute the text width for non-monospace font
 };
 
 export const defaultCSS = `
@@ -1211,7 +1212,7 @@ export class Start extends FakeSVG {
 		this.type = type;
 		if(label) {
 			this.label = ""+label;
-			this.width = Math.max(20, this.label.length * Options.CHAR_WIDTH + 10);
+			this.width = Math.max(20, Options.COMPUTE_TEXT_WIDTH(this.label, Start) + 10);
 		}
 		if(Options.DEBUG) {
 			this.attrs['data-updown'] = this.up + " " + this.height + " " + this.down;
@@ -1273,7 +1274,7 @@ export class Terminal extends FakeSVG {
 		this.text = ""+text;
 		this.href = href;
 		this.title = title;
-		this.width = this.text.length * Options.CHAR_WIDTH + 20; /* Assume that each char is .5em, and that the em is 16px */
+		this.width = Options.COMPUTE_TEXT_WIDTH(this.text, Terminal) + 20;
 		this.height = 0;
 		this.up = 11;
 		this.down = 11;
@@ -1310,7 +1311,7 @@ export class NonTerminal extends FakeSVG {
 		this.text = ""+text;
 		this.href = href;
 		this.title = title;
-		this.width = this.text.length * Options.CHAR_WIDTH + 20;
+		this.width = Options.COMPUTE_TEXT_WIDTH(this.text, NonTerminal) + 20;
 		this.height = 0;
 		this.up = 11;
 		this.down = 11;
@@ -1347,7 +1348,7 @@ export class Comment extends FakeSVG {
 		this.text = ""+text;
 		this.href = href;
 		this.title = title;
-		this.width = this.text.length * Options.COMMENT_CHAR_WIDTH + 10;
+		this.width = Options.COMPUTE_TEXT_WIDTH(this.text, Comment) + 10;
 		this.height = 0;
 		this.up = 8;
 		this.down = 8;
@@ -1563,4 +1564,8 @@ function nodeFromJSON(node) {
 
 function itemsFromJSON(items) {
 	return items ? items.map(nodeFromJSON) : [];
+}
+
+function defaultComputeTextWidth(text, component) {
+	return text.length * (component === Comment ? Options.COMMENT_CHAR_WIDTH : Options.CHAR_WIDTH);
 }
